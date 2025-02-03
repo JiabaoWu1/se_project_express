@@ -17,3 +17,5 @@ app.use("/", mainRouter);
 app.listen(PORT, () => {
   console.log(`Serve is running on port ${PORT}`);
 });
+
+module.exports = app;
