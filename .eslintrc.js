@@ -22,10 +22,6 @@ module.exports = {
     sourceType: "module",
   },
   rules: {
-    semi: ["error", "always"], // Enforce semicolons
-    quotes: ["error", "double"], // Enforce double quotes
-    "no-unused-vars": ["warn"], // Warn about unused variables
-    indent: ["error", 2], // Enforce 2 spaces for indentation
-    "no-console": "off", // Allow console statements
+    "no-underscore-dangle": ["error", { allow: ["_id"] }],
   },
 };

@@ -18,5 +18,9 @@ router.post("/", createClothingItem);
 router.get("/", getAllClothingItems);
 // Delete //
 router.delete("/:itemId", deleteClothingItem);
+// Like //
+router.put("/:itemId/likes", auth, likeItem);
+// Dislike //
+router.delete("/:itemId/likes", auth, dislikeItem);
 
 module.exports = router;
