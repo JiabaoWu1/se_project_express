@@ -1,4 +1,11 @@
 const ClothingItem = require("../models/clothingItem");
+const {
+  OK,
+  BAD_REQUEST,
+  NOT_FOUND,
+  FORBIDDEN,
+  SERVER_ERROR,
+} = require("../utils/errors");
 
 const createClothingItem = (req, res) => {
   console.log(req);
@@ -23,7 +30,7 @@ const createClothingItem = (req, res) => {
 
 const getAllClothingItems = (req, res) => {
   ClothingItem.find({})
-    .then((items) => res.status(200).send({ data: items }))
+    .then((items) => res.status(OK).send({ data: items }))
     .catch((err) => {
       console.error(err);
       return res.status(SERVER_ERROR).send({ message: "Error from getItems" });
@@ -45,7 +52,7 @@ const deleteClothingItem = (req, res) => {
       } else {
         ClothingItem.deleteOne(item)
           .then(() =>
-            res.status(200).send({ message: "Item deleted successfully" })
+            res.status(OK).send({ message: "Item deleted successfully" })
           )
           .catch((err) => {
             console.error(err);
@@ -69,8 +76,55 @@ const deleteClothingItem = (req, res) => {
     });
 };
 
+const likeItem = (req, res) => {
+  const userId = req.user._id;
+  const { itemId } = req.params;
+
+  ClothingItem.findByIdAndUpdate(
+    itemId,
+    { $addToSet: { likes: userId } },
+    { new: true }
+  )
+    .orFail()
+    .then((updatedItems) => res.status(OK).send(updatedItems))
+    .catch((err) => {
+      if (err.name === "CastError") {
+        return res.status(BAD_REQUEST).send({ message: "Invalid item ID" });
+      }
+      if (err.name === "DocumentNotFoundError") {
+        return res.status(NOT_FOUND).send({ message: "Invalid Id" });
+      }
+      return res.status(SERVER_ERROR).send({ message: "Error from likeItem" });
+    });
+};
+
+const dislikeItem = (req, res) => {
+  const userId = req.user._id;
+  const { itemId } = req.params;
+
+  ClothingItem.findByIdAndUpdate(
+    itemId,
+    { $pull: { likes: userId } },
+    { new: true }
+  )
+    .orFail()
+    .then((updatedItems) => res.status(OK).send(updatedItems))
+    .catch((err) => {
+      if (err.name === "CastError") {
+        return res.status(BAD_REQUEST).send({ message: "Invalid item ID" });
+      }
+      if (err.name === "DocumentNotFoundError") {
+        return res.status(NOT_FOUND).send({ message: "Invalid Id" });
+      }
+      return res
+        .status(SERVER_ERROR)
+        .send({ message: "Error from deleteItem" });
+    });
+};
 module.exports = {
   createClothingItem,
   getAllClothingItems,
   deleteClothingItem,
+  likeItem,
+  dislikeItem,
 };
