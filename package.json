@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/JiabaoWu1/se_project_express#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.21.2",
     "mongoose": "^8.9.5",
     "validator": "^13.12.0"

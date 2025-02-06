@@ -1,5 +1,6 @@
-const mongoose = require("mongoose");
+const mongoose = require("mongoose"); // import the mongoose package
 const validator = require("validator");
+const bcrypt = require("bcryptjs"); // import the bcrypt package
 
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true, minlength: 2, maxlength: 30 },
