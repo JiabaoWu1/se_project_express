@@ -92,7 +92,7 @@ const login = (req, res) => {
     .catch((error) => {
       console.error(error);
       console.log(error.name);
-      return res.status(UNAUTH_ERROR).send({ message: error.message });
+      return res.status(UNAUTHORIZED).send({ message: error.message });
     });
 };
 
