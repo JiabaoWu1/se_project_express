@@ -55,8 +55,8 @@ const createUser = (req, res) => {
     });
 };
 
-const getUser = (req, res) => {
-  const { userId } = req.params;
+const getCurrentUser = (req, res) => {
+  const { userId } = req.user;
   User.findById(userId)
     .orFail()
     .then((user) => res.status(OK).send(user))
@@ -96,4 +96,47 @@ const login = (req, res) => {
     });
 };
 
-module.exports = { getUsers, createUser, getUser, login };
+// route to update user
+const updateCurrentUser = (req, res) => {
+  const { name, avatar } = req.body; // Extract name and avatar from the request body
+  const { _id } = req.user; // Get the user ID from req.user
+
+  User.findByIdAndUpdate(
+    _id,
+    { name, avatar },
+    { new: true, runValidators: true } // Enable validators and return the updated document
+  )
+    .orFail(() => {
+      throw new Error("DocumentNotFoundError");
+    }) // Throw an error if the user is not found
+    .then((user) => {
+      res.send({
+        _id: user._id,
+        name: user.name,
+        avatar: user.avatar,
+        email: user.email,
+      });
+    })
+    .catch((err) => {
+      console.error(err);
+      if (err.name === "DocumentNotFoundError") {
+        return res.status(NOT_FOUND).send({ message: "User not found" });
+      }
+      if (err.name === "ValidationError") {
+        return res
+          .status(BAD_REQUEST)
+          .send({ message: "Invalid data provided" });
+      }
+      return res
+        .status(SERVER_ERROR)
+        .send({ message: "An error has occurred on the server" });
+    });
+};
+
+module.exports = {
+  getUsers,
+  createUser,
+  getCurrentUser,
+  login,
+  updateCurrentUser,
+};

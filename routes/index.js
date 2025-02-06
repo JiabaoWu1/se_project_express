@@ -3,6 +3,10 @@ const userRouter = require("./users");
 const itemRouter = require("./clothingItem");
 const { NOT_FOUND } = require("../utils/errors");
 
+// authentication routes
+router.post("/signin", login);
+router.post("/signup", createUser);
+
 router.use("/users", userRouter);
 router.use("/items", itemRouter);
 
