@@ -1,14 +1,17 @@
+const jwt = require("jsonwebtoken"); // Ensure JWT is imported
+
+const bcrypt = require("bcryptjs"); // Import bcrypt   first before User import
 const User = require("../models/user");
 const {
   OK,
-  CREATED,
   BAD_REQUEST,
   NOT_FOUND,
   CONFLICT,
   SERVER_ERROR,
   UNAUTHORIZED,
-  FORBIDDEN,
 } = require("../utils/errors");
+
+const { JWT_SECRET } = require("../utils/config"); // Fix missing secret
 
 const getUsers = (req, res) => {
   User.find({})
@@ -25,8 +28,8 @@ const getUsers = (req, res) => {
 
 const createUser = (req, res) => {
   const { name, avatar, email, password } = req.body;
-  //hash the password
-  bycrypt
+  // hash the password
+  bcrypt
     .hash(password, 10)
     .then((hash) => User.create({ name, avatar, email, password: hash }))
 

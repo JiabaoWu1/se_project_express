@@ -9,14 +9,14 @@ const {
 } = require("../controllers/clothingItem");
 
 // Create //
-router.post("/", createClothingItem);
+router.post("/", auth, createClothingItem);
 // Read //
 router.get("/", getAllClothingItems);
 // Delete //
-router.delete("/:itemId", deleteClothingItem);
+router.delete("/:itemId", auth, deleteClothingItem);
 // Like //
-router.put("/:itemId/likes", likeItem);
+router.put("/:itemId/likes", auth, likeItem);
 // Dislike //
-router.delete("/:itemId/likes", dislikeItem);
+router.delete("/:itemId/likes", auth, dislikeItem);
 
 module.exports = router;

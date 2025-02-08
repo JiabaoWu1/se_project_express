@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const mainRouter = require("./routes/index");
 const cors = require("cors"); // import cors
+const mainRouter = require("./routes/index");
 
 const app = express();
 const { PORT = 3001 } = process.env;
@@ -13,7 +13,7 @@ mongoose
   })
   .catch(console.error);
 
-//middleware
+// middleware
 app.use(express.json());
 
 app.use("/", mainRouter);
@@ -21,7 +21,7 @@ app.use("/", mainRouter);
 // enable cors
 app.use(cors());
 
-//start the server
+// start the server
 app.listen(PORT, () => {
   console.log(`Serve is running on port ${PORT}`);
 });

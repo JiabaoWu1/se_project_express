@@ -1,6 +1,5 @@
 const mongoose = require("mongoose"); // import the mongoose package
 const validator = require("validator");
-const bcrypt = require("bcryptjs"); // import the bcrypt package
 
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true, minlength: 2, maxlength: 30 },
@@ -13,6 +12,22 @@ const userSchema = new mongoose.Schema({
       },
       message: "You must enter a valid URL",
     },
+  },
+  email: {
+    type: String,
+    required: [true, "The email field is required"],
+    unique: true,
+    validate: {
+      validator(email) {
+        return validator.isEmail(email);
+      },
+      message: "You must enter a valid email",
+    },
+  },
+  password: {
+    type: String,
+    required: true,
+    select: false,
   },
 });
 

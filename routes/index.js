@@ -9,8 +9,8 @@ router.post("/signin", login);
 router.post("/signup", createUser);
 
 // allows to register handlers for different routes
-router.use("/users", userRouter); //register users router
-router.use("/items", itemRouter); //item router
+router.use("/users", userRouter); // register users router
+router.use("/items", itemRouter); // item router
 
 // middleware to handle an unknown route
 router.use((req, res) => {
