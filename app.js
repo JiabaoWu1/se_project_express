@@ -1,6 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const cors = require("cors"); // import cors
+const cors = require("cors");
 const mainRouter = require("./routes/index");
 
 const app = express();
@@ -9,21 +9,22 @@ const { PORT = 3001 } = process.env;
 mongoose
   .connect("mongodb://127.0.0.1:27017/wtwr_db")
   .then(() => {
-    console.log("Connect to DB");
+    console.log("✅ Connected to DB");
   })
   .catch(console.error);
 
-// middleware
-app.use(express.json());
+// Middleware setup
+app.use(cors()); // ✅ Enable CORS before routes
+app.use(express.json()); // ✅ Enable JSON parsing before routes
 
-app.use("/", mainRouter);
+// Debugging line to check if app.js is loading mainRouter
+console.log("✅ Loading Main Router...");
 
-// enable cors
-app.use(cors());
+app.use("/", mainRouter); // Load main router
 
-// start the server
+// Start the server
 app.listen(PORT, () => {
-  console.log(`Serve is running on port ${PORT}`);
+  console.log(`🚀 Server is running on port ${PORT}`);
 });
 
 module.exports = app;

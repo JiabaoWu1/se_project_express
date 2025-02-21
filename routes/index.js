@@ -4,6 +4,8 @@ const itemRouter = require("./clothingItem");
 const { NOT_FOUND } = require("../utils/errors"); // import the error message
 const { login, createUser } = require("../controllers/users"); // import the login and createUser functions
 
+console.log("Main Router is Loaded");
+
 // authentication routes
 router.post("/signin", login);
 router.post("/signup", createUser);
